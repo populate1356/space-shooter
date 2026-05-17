@@ -1,17 +1,12 @@
 import pygame
 from settings import WINDOW_WIDTH, WINDOW_HEIGHT  # <-- 추가하기
-from os.path import join
 from entity.player import Player
+from entity.bg import Background
 
 pygame.init()
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 pygame.display.set_caption("space shooter")
 
-
-bg_path = join("images", "background.png")
-bg_surf = pygame.transform.scale(
-    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
-)
 
 clock = pygame.time.Clock()
 
@@ -21,6 +16,7 @@ def main():
     direction = pygame.Vector2(0, 0)
     all_sprite_group = pygame.sprite.Group()
 
+    Background(all_sprite_group)
     Player(all_sprite_group)
 
     while running:
