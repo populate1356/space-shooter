@@ -1,23 +1,41 @@
 import pygame
-from random import randint
+from os.path import join
 
 pygame.init()
-WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+WINDOW_WIDTH, WINDOW_HEIGHT = 1290, 720
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("colors")
+pygame.display.set_caption("space shooter")
+
+player_path = join("images", "player.png")
+player_surf = pygame.image.load(player_path).convert_alpha()
+player_rect = player_surf.get_frect(
+    center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+)  # <-- 새로운 코드
+
+bg_path = join("images", "background.png")
+bg_surf = pygame.transform.scale(
+    pygame.image.load(bg_path).convert_alpha(), (WINDOW_WIDTH, WINDOW_HEIGHT)
+)
 
 
 def main():
     running = True
-    surf = pygame.Surface((100, 150))  # <--- 생성
-    surf.fill("white")  # <-- 색상 설정
+    direction = 1  # <--- 방향
+    speed = 1  # <--- 속력
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
 
-        display_surface.fill((randint(0, 255), randint(0, 255), randint(0, 255)))
-        display_surface.blit(surf, (100, 100))  # <-- 화면에 붙이기
+        if (
+            player_rect.right >= WINDOW_WIDTH or player_rect.left <= 0
+        ):  # <-- 방향 바꾸는 조건
+            direction *= -1
+
+        player_rect.right += speed * direction  # <-- 위치 업데이트
+        display_surface.blit(bg_surf, (0, 0))
+        display_surface.blit(player_surf, player_rect)  # <--- 위치 업데이트
+
         pygame.display.flip()
     pygame.quit()
 
