@@ -1,5 +1,6 @@
 import pygame
 from os.path import join
+from entity.missile import Missile
 from settings import WINDOW_WIDTH, WINDOW_HEIGHT
 
 
@@ -7,6 +8,8 @@ class Player(pygame.sprite.Sprite):
     path: str = join("images", "player.png")
     speed: float = 100
     velocity: pygame.Vector2 = pygame.Vector2(0, 0)
+    missile_cooldown: float = 200
+    missile_timer: float = 0
 
     def __init__(self, group: pygame.sprite.Group):
         super().__init__(group)
@@ -14,18 +17,27 @@ class Player(pygame.sprite.Sprite):
         self.rect: pygame.FRect = self.image.get_frect(
             center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
         )
+        self.group: pygame.sprite.Group = group
 
     def update(self, dt: float):
-        keys = pygame.key.get_pressed()  # <-- 키 입력 받기
-        self.velocity.x = int(keys[pygame.K_d]) - int(
-            keys[pygame.K_a]
-        )  # <-- 좌우방향 바꾸기
-        self.velocity.y = int(keys[pygame.K_s]) - int(
-            keys[pygame.K_w]
-        )  # <-- 상하방향 바꾸기
+        keys = pygame.key.get_pressed()
+        self.velocity.x = int(keys[pygame.K_d]) - int(keys[pygame.K_a])
+        self.velocity.y = int(keys[pygame.K_s]) - int(keys[pygame.K_w])
 
         if self.velocity.length() > 0:
-            self.velocity.normalize_ip()  # <-- 정규화
+            self.velocity.normalize_ip()
 
-        self.rect.center += self.velocity * Player.speed * dt  # <-- 위치 업데이트
-        self.rect.clamp_ip(pygame.Rect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT))
+        self.rect.center += self.velocity * Player.speed * dt
+
+        self.handleMissile()
+
+    def handleMissile(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - Player.missile_timer > Player.missile_cooldown:
+            self.spawn_missile()
+
+    def spawn_missile(self):
+        keys = pygame.key.get_just_pressed()
+        if keys[pygame.K_SPACE]:
+            Missile(self.group, pygame.Vector2(self.rect.midtop))
+            Player.missile_timer = pygame.time.get_ticks()

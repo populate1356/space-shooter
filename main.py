@@ -2,7 +2,6 @@ import pygame
 from settings import WINDOW_WIDTH, WINDOW_HEIGHT  # <-- 추가하기
 from entity.player import Player
 from entity.bg import Background
-from entity.missile import Missile
 
 pygame.init()
 display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
@@ -19,7 +18,6 @@ def main():
 
     Background(all_sprite_group)
     Player(all_sprite_group)
-    Missile(all_sprite_group)
 
     while running:
         dt = clock.tick(30) / 1000
