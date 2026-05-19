@@ -1,6 +1,6 @@
 import pygame
-from settings import display_surface
 from settings import (
+    display_surface,
     all_sprite_group,
     meteor_sprite_group,
     missile_sprite_group,
