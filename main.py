@@ -8,6 +8,7 @@ from settings import (
 from entity.bg import Background
 from entity.meteor import Meteor
 from entity.player import Player
+from entity.hud import Hud
 
 clock = pygame.time.Clock()
 
@@ -15,10 +16,13 @@ clock = pygame.time.Clock()
 def main():
     running = True
     direction = pygame.Vector2(0, 0)
+    game_over = False
 
-    Background()
+    bg = Background()
     player = Player()
+    hud = Hud()
     meteor_event = pygame.event.custom_type()
+
     pygame.time.set_timer(meteor_event, 400)
 
     while running:
@@ -28,20 +32,31 @@ def main():
                 running = False
             if event.type == meteor_event:
                 Meteor.spawn(3)
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                if game_over:
+                    all_sprite_group.add(bg)
+                    player.reset()
+                    hud.kill()
+                    game_over = False
 
         if direction.length() > 0:
             direction.normalize_ip()
+
         pygame.sprite.groupcollide(
             meteor_sprite_group, missile_sprite_group, True, True
         )
 
-        if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
-            running = False
-
-        display_surface.fill("gray")
-
-        all_sprite_group.update(dt)
-        all_sprite_group.draw(display_surface)
+        if not game_over:
+            if pygame.sprite.spritecollide(player, meteor_sprite_group, False):
+                game_over = True
+            all_sprite_group.update(dt)
+            all_sprite_group.draw(display_surface)
+        else:
+            all_sprite_group.empty()
+            meteor_sprite_group.empty()
+            missile_sprite_group.empty()
+            display_surface.blit(bg.image)
+            hud.draw("Game Over")
 
         pygame.display.flip()
     pygame.quit()

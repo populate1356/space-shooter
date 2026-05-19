@@ -40,3 +40,7 @@ class Player(pygame.sprite.Sprite):
         if keys[pygame.K_SPACE]:
             Missile(pygame.Vector2(self.rect.midtop))
             Player.missile_timer = pygame.time.get_ticks()
+
+    def reset(self):
+        self.rect.center = pygame.Vector2(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
+        all_sprite_group.add(self)

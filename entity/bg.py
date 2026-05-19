@@ -10,7 +10,7 @@ class Background(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__(all_sprite_group)
-        self.image = pygame.transform.scale(
+        self.image: pygame.Surface = pygame.transform.scale(
             pygame.image.load(Background.path).convert_alpha(),
             (WINDOW_WIDTH, WINDOW_HEIGHT),
         )
