@@ -2,15 +2,15 @@ import pygame
 from os.path import join
 import random
 
-from settings import WINDOW_HEIGHT, WINDOW_WIDTH
+from settings import WINDOW_HEIGHT, WINDOW_WIDTH, all_sprite_group, meteor_sprite_group
 
 
 class Meteor(pygame.sprite.Sprite):
     path = join("images", "meteor.png")
     surf: pygame.Surface = pygame.image.load(path).convert_alpha()
 
-    def __init__(self, group: pygame.sprite.Group):  # <-- 수정하기
-        super().__init__(group)
+    def __init__(self):
+        super().__init__(all_sprite_group, meteor_sprite_group)
         self.image = Meteor.surf
         self.rect: pygame.FRect = self.image.get_frect(
             center=(
@@ -27,8 +27,8 @@ class Meteor(pygame.sprite.Sprite):
             self.kill()
 
     @classmethod
-    def spawn(cls, group: pygame.sprite.Group, n: int):
+    def spawn(cls, n: int):
         if n <= 0:
             raise ValueError("n must be greater than 0")
         for _ in range(n):
-            Meteor(group)
+            Meteor()

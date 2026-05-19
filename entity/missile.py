@@ -1,5 +1,6 @@
 import pygame
 from os.path import join
+from settings import missile_sprite_group, all_sprite_group
 
 
 class Missile(pygame.sprite.Sprite):
@@ -7,8 +8,8 @@ class Missile(pygame.sprite.Sprite):
     surf: pygame.Surface = pygame.image.load(path).convert_alpha()
     speed: float = 200
 
-    def __init__(self, group: pygame.sprite.Group, pos: pygame.Vector2):
-        super().__init__(group)
+    def __init__(self, pos: pygame.Vector2):
+        super().__init__(all_sprite_group, missile_sprite_group)
         self.image = Missile.surf
         self.rect: pygame.FRect = self.image.get_frect(midbottom=(pos))
 

@@ -1,7 +1,7 @@
 import pygame
 from os.path import join
 from entity.missile import Missile
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, all_sprite_group
 
 
 class Player(pygame.sprite.Sprite):
@@ -11,13 +11,12 @@ class Player(pygame.sprite.Sprite):
     missile_cooldown: float = 200
     missile_timer: float = 0
 
-    def __init__(self, group: pygame.sprite.Group):
-        super().__init__(group)
+    def __init__(self):
+        super().__init__(all_sprite_group)
         self.image = pygame.image.load(Player.path).convert_alpha()
         self.rect: pygame.FRect = self.image.get_frect(
             center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2)
         )
-        self.group: pygame.sprite.Group = group
 
     def update(self, dt: float):
         keys = pygame.key.get_pressed()
@@ -39,5 +38,5 @@ class Player(pygame.sprite.Sprite):
     def spawn_missile(self):
         keys = pygame.key.get_just_pressed()
         if keys[pygame.K_SPACE]:
-            Missile(self.group, pygame.Vector2(self.rect.midtop))
+            Missile(pygame.Vector2(self.rect.midtop))
             Player.missile_timer = pygame.time.get_ticks()

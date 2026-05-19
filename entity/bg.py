@@ -1,6 +1,6 @@
 import pygame
 from os.path import join
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT
+from settings import WINDOW_WIDTH, WINDOW_HEIGHT, all_sprite_group
 
 
 class Background(pygame.sprite.Sprite):
@@ -8,8 +8,8 @@ class Background(pygame.sprite.Sprite):
     speed: float = 100
     velocity: pygame.Vector2 = pygame.Vector2(0, 0)
 
-    def __init__(self, group: pygame.sprite.Group):
-        super().__init__(group)
+    def __init__(self):
+        super().__init__(all_sprite_group)
         self.image = pygame.transform.scale(
             pygame.image.load(Background.path).convert_alpha(),
             (WINDOW_WIDTH, WINDOW_HEIGHT),
