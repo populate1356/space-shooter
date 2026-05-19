@@ -1,13 +1,8 @@
 import pygame
-from settings import WINDOW_WIDTH, WINDOW_HEIGHT  # <-- 추가하기
-from entity.player import Player
+from settings import display_surface  # <-- 추가하기
 from entity.bg import Background
 from entity.meteor import Meteor
-
-pygame.init()
-display_surface = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
-pygame.display.set_caption("space shooter")
-
+from entity.player import Player
 
 clock = pygame.time.Clock()
 

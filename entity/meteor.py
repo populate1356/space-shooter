@@ -7,10 +7,11 @@ from settings import WINDOW_HEIGHT, WINDOW_WIDTH
 
 class Meteor(pygame.sprite.Sprite):
     path = join("images", "meteor.png")
+    surf: pygame.Surface = pygame.image.load(path).convert_alpha()
 
     def __init__(self, group: pygame.sprite.Group):  # <-- 수정하기
         super().__init__(group)
-        self.image = pygame.image.load(Meteor.path).convert_alpha()
+        self.image = Meteor.surf
         self.rect: pygame.FRect = self.image.get_frect(
             center=(
                 random.randint(0, WINDOW_WIDTH),
